@@ -1,10 +1,12 @@
 package main
 
-import fixedxor "github.com/sboy99/cryptopals/set_1/fixed_xor"
+import (
+	singlebytexorcipher "github.com/sboy99/cryptopals/set_1/single_byte_xor_cipher"
+)
 
 func main() {
-	str1 := "1c0111001f010100061a024b53535009181c"
-	str2 := "686974207468652062756c6c277320657965"
-	xorResult := fixedxor.FixedXOR(str1, str2)
-	println(xorResult) // Output: 746865206b696420646f6e277420706c6179
+	encString := "1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736"
+	key, message := singlebytexorcipher.SingleByteXORCipher(encString)
+	println("Key:", key)         // Key: 88
+	println("Message:", message) // Message: Cooking MC's like a pound of bacon
 }
