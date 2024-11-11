@@ -2,7 +2,6 @@ package singlebytexorcipher
 
 import (
 	"encoding/hex"
-	"fmt"
 	"strings"
 )
 
@@ -20,31 +19,29 @@ func scoreText(text string) int {
 
 // Function to decrypt a hex string XOR'd with a single character
 func SingleByteXORCipher(hexString string) (byte, string) {
-	// Decode the hex string to bytes
-	bytesData, err := hex.DecodeString(hexString)
+	decodedBytes, err := hex.DecodeString(hexString)
 	if err != nil {
-		fmt.Println("Error decoding hex string:", err)
-		return 0, ""
+		panic(err)
 	}
 
 	bestScore := 0
 	var bestKey byte
 	var bestMessage string
 
-	// Try each possible key (0-255)
 	for key := 0; key < 256; key++ {
-		decrypted := make([]byte, len(bytesData))
-		for i, b := range bytesData {
-			decrypted[i] = b ^ byte(key)
+		decryptedBytes := make([]byte, len(decodedBytes))
+		for i, b := range decodedBytes {
+			decryptedBytes[i] = b ^ byte(key)
 		}
-		decryptedText := string(decrypted)
-		score := scoreText(decryptedText)
 
+		message := string(decryptedBytes)
+		score := scoreText(message)
 		if score > bestScore {
 			bestScore = score
 			bestKey = byte(key)
-			bestMessage = decryptedText
+			bestMessage = message
 		}
+
 	}
 
 	return bestKey, bestMessage
